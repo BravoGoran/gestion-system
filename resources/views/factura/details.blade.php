@@ -24,10 +24,27 @@
                 <tr>
                     <td>{{ $factura->id }}</td>
                     <td>{{ $factura->client_id }}</td>
-                    <td>{{ $factura->client_name }}</td>
-                    <td>{{ $factura->email }}</td>
+
+                    <!-- Si se utiliza Eloquent con relaciones -->
+                    @if (isset($factura->clientes))
+                        <td>{{ $factura->clientes->name }}</td>
+                        <td>{{ $factura->clientes->email }}</td>
+                    @else
+                        <!-- Si se usa Query Builder o Eloquent sin relaciones -->
+                        <td>{{ $factura->client_name }}</td>
+                        <td>{{ $factura->email }}</td>
+                    @endif
+
                     <td>{{ $factura->project_id }}</td>
-                    <td>{{ $factura->project_name }}</td>
+
+                    <!-- Si se utiliza Eloquent con relaciones -->
+                    @if (isset($factura->proyectos))
+                        <td>{{ $factura->proyectos->name }}</td>
+                    @else
+                        <!-- Si se usa Query Builder o Eloquent sin relaciones -->
+                        <td>{{ $factura->project_name }}</td>
+                    @endif
+
                     <td>{{ $factura->issue_date }}</td>
                     <td>{{ $factura->due_date }}</td>
                     <td>{{ $factura->total_amount }}</td>

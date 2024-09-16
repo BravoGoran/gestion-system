@@ -32,7 +32,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('clientes/{cliente}/edit', [ClienteController::class, 'edit'])->name('clientes.edit');
     Route::patch('clientes/{cliente}', [ClienteController::class, 'update'])->name('clientes.update');
     Route::delete('clientes/{cliente}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
-    Route::get('facturas/details', [FacturaController::class, 'details'])->name('facturas.details');
+    Route::get('facturas/details', [FacturaController::class, 'eloqSinRelaciones'])->name('facturas.details');
+    Route::get('facturas/details2', [FacturaController::class, 'table'])->name('facturas.details2');
+    Route::get('facturas/details3', [FacturaController::class, 'select'])->name('facturas.details3');
+    Route::get('facturas/details4', [FacturaController::class, 'eloqRelaciones'])->name('facturas.details4');
 });
 
 Route::middleware('auth')->group(function () {
