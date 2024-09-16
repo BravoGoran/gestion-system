@@ -6,6 +6,7 @@ use App\Models\Cliente;
 use App\Models\Factura;
 use App\Models\Proyecto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FacturaController extends Controller
 {
@@ -13,6 +14,28 @@ class FacturaController extends Controller
     {
         $facturas = Factura::all();
         return view('factura.index', compact('facturas'));
+    }
+
+    public function details()
+    {
+        $facturas = DB::table('facturas as fa')
+            ->join('clientes as cli', 'cli.id', '=', 'fa.client_id')
+            ->join('proyectos as pr', 'pr.id', '=', 'fa.project_id')
+            ->select(
+                'fa.id as id',
+                'fa.client_id as client_id',
+                'cli.name as client_name',
+                'cli.email as email',
+                'fa.project_id as project_id',
+                'pr.name as project_name',
+                'fa.issue_date as issue_date',
+                'fa.due_date as due_date',
+                'fa.total_amount as total_amount',
+                'fa.status as status'
+            )
+            ->get();
+        
+        return view('factura.details', compact('facturas'));
     }
 
     public function create()

@@ -23,7 +23,17 @@ use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\HoraTrabajadaController;
 use App\Http\Controllers\auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\FacturaDetalleController;
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('clientes', [ClienteController::class, 'index'])->name('clientes.index');
+    Route::get('clientes/create', [ClienteController::class, 'create'])->name('clientes.create');
+    Route::post('clientes', [ClienteController::class, 'store'])->name('clientes.store');
+    Route::get('clientes/{cliente}', [ClienteController::class, 'show'])->name('clientes.show');
+    Route::get('clientes/{cliente}/edit', [ClienteController::class, 'edit'])->name('clientes.edit');
+    Route::patch('clientes/{cliente}', [ClienteController::class, 'update'])->name('clientes.update');
+    Route::delete('clientes/{cliente}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
+    Route::get('facturas/details', [FacturaController::class, 'details'])->name('facturas.details');
+});
 
 Route::middleware('auth')->group(function () {
 
@@ -71,18 +81,6 @@ Route::middleware('auth')->group(function () {
     Route::get('horas/{horaTrabajada}/edit', [HoraTrabajadaController::class, 'edit'])->name('horas.edit');
     Route::patch('horas/{horaTrabajada}', [HoraTrabajadaController::class, 'update'])->name('horas.update');
     Route::delete('horas/{horaTrabajada}', [HoraTrabajadaController::class, 'destroy'])->name('horas.destroy');
-});
-
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('clientes', [ClienteController::class, 'index'])->name('clientes.index');
-    Route::get('clientes/create', [ClienteController::class, 'create'])->name('clientes.create');
-    Route::post('clientes', [ClienteController::class, 'store'])->name('clientes.store');
-    Route::get('clientes/{cliente}', [ClienteController::class, 'show'])->name('clientes.show');
-    Route::get('clientes/{cliente}/edit', [ClienteController::class, 'edit'])->name('clientes.edit');
-    Route::patch('clientes/{cliente}', [ClienteController::class, 'update'])->name('clientes.update');
-    Route::delete('clientes/{cliente}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
-
-    Route::get('facturaDetalle', [FacturaDetalleController::class, 'index'])->name('facturas.details');
 });
 
 // Rutas para AuthenticatedSessionController
