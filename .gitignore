@@ -4,7 +4,7 @@
 /public/storage
 /storage/*.key
 /vendor
-/gestion-system
+/gestion-system/
 .env
 .env.backup
 .env.production
