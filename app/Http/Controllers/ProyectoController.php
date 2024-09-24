@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProyectoRequest;
 use App\Models\Cliente;
 use App\Models\Proyecto;
 use Illuminate\Validation\Rule;
@@ -21,29 +22,8 @@ class ProyectoController extends Controller
         return view('proyecto.create', compact('clientes'));
     }
 
-    public function store(Request $request)
+    public function store(ProyectoRequest $request)
     {
-        $request->validate([
-            'client_id' => 'required|exists:clientes,id',
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'status' => [
-                'required',
-                'string',
-                Rule::in(['in_progress', 'completed', 'on_hold']),
-                function ($attribute, $value, $fail) use ($request) {
-                    if ($value === 'completed' && !$request->end_date) {
-                        $fail('El estado no puede ser completado sin una fecha de finalización.');
-                    }
-                    if ($value !== 'completed' && $request->end_date) {
-                        $fail('El estado debe ser completado si hay una fecha de finalización.');
-                    }
-                }
-            ],
-        ]);
-
         $proyecto = new Proyecto();
         $proyecto->client_id = $request->client_id;
         $proyecto->name = $request->name;
